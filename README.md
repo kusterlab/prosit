@@ -55,11 +55,11 @@ In the example GPU device 0 is used for computation. The default PORT is 5000.
         You can adjust the example above to your own needs. Send any list of (Peptide, Precursor charge, Collision energy) in the format of `/example/peptidelist.csv` to a running instance of the Prosit server.
 
 
-        ## Pseudo-code
+    ## Pseudo-code
 
-           1. Load the model given as MODEL environment variable
-              2. Start a server and wait for inputs
-                 3. On incomming request
-                        * transform peptide list to model input format (numpy arrays)
-                               * predict fragment intensity with loaded model for given peptides
-                                      * transform prediction to msms.txt output format and return response
+    1. Load the model given as MODEL environment variable
+    2. Start a server and wait for inputs
+    3. On incomming request
+        * transform peptide list to model input format (numpy arrays)
+        * predict fragment intensity with loaded model for given peptides
+        * transform prediction to msms.txt output format and return response
