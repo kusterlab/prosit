@@ -2,7 +2,7 @@
 # Prosit
 
 Prosit is a deep neural network to predict iRT values and MS2 spectra for given peptide sequences. 
-You can use it at [proteomicsdb.org/prosit/](www.proteomicsdb.org/prosit/) without installation.
+You can use it at [proteomicsdb.org/prosit/](http://www.proteomicsdb.org/prosit/) without installation.
 
 [![CLA assistant](https://cla-assistant.io/readme/badge/kusterlab/prosit)](https://cla-assistant.io/kusterlab/prosit)
 
