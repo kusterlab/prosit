@@ -42,24 +42,24 @@ In the example GPU device 0 is used for computation. The default PORT is 5000.
 
     make server MODEL=/path/to/model/
 
-    ## Example
+## Example
 
-    Please find an example input file at `example/peptidelist.csv`. After starting the server you can run:
+Please find an example input file at `example/peptidelist.csv`. After starting the server you can run:
 
-        curl -F "peptides=@examples/peptidelist.csv" http://127.0.0.1:5000/predict/
+    curl -F "peptides=@examples/peptidelist.csv" http://127.0.0.1:5000/predict/
 
-        The example takes about 4s to run. An expected output file can be found at `examples/output_msms.txt`.
+    The example takes about 4s to run. An expected output file can be found at `examples/output_msms.txt`.
 
-        ## Using Prosit on your data
+## Using Prosit on your data
 
-        You can adjust the example above to your own needs. Send any list of (Peptide, Precursor charge, Collision energy) in the format of `/example/peptidelist.csv` to a running instance of the Prosit server.
+You can adjust the example above to your own needs. Send any list of (Peptide, Precursor charge, Collision energy) in the format of `/example/peptidelist.csv` to a running instance of the Prosit server.
 
 
-    ## Pseudo-code
+## Pseudo-code
 
-    1. Load the model given as MODEL environment variable
-    2. Start a server and wait for inputs
-    3. On incomming request
-        * transform peptide list to model input format (numpy arrays)
-        * predict fragment intensity with loaded model for given peptides
-        * transform prediction to msms.txt output format and return response
+1. Load the model given as MODEL environment variable
+2. Start a server and wait for inputs
+3. On incomming request
+    * transform peptide list to model input format (numpy arrays)
+    * predict fragment intensity with loaded model for given peptides
+    * transform prediction to msms.txt output format and return response
