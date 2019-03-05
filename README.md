@@ -33,7 +33,7 @@ Prosit assumes your model to be in a directory that includes:
 - config.yml - a model specifying names of inputs and outputs of the model
 - weights file(s) - that follow the template `weights_{epoch}_{loss}.hdf5`
 
-You can download a pre-trained model for HCD fragmentation prediction on [figshare](https://figshare.com/account/home#/projects/35582).
+You can download a pre-trained model for HCD fragmentation prediction on https://figshare.com/projects/Prosit/35582.
 
 ## Usage
 
