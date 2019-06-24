@@ -54,6 +54,7 @@ Please find an example input file at `example/peptidelist.csv`. After starting t
 
 You can adjust the example above to your own needs. Send any list of (Peptide, Precursor charge, Collision energy) in the format of `/example/peptidelist.csv` to a running instance of the Prosit server.
 
+Please note: Sequences with amino acid U, O, or X are not supported. Modifications except "M(ox)" are not supported. Each C is treated as Cysteine with carbamidomethylation (fixed modification in MaxQuant).
 
 ## Pseudo-code
 
