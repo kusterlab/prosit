@@ -1,5 +1,6 @@
 DATA_PATH = "/root/data.hdf5"
-MODEL_DIR = "/root/model/"
+MODEL_SPECTRA = "/root/model_spectra/"
+MODEL_IRT = "/root/model_irt/"
 OUT_DIR = "/root/prediction/"
 
 VAL_SPLIT = 0.8

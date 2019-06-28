@@ -1,10 +1,12 @@
 import os
-import numpy
+import tempfile
+import warnings
 import flask
-import pandas
+from flask import after_this_request
+import pandas as pd
+import tensorflow as tf
 
-
-from . import model as model_lib
+from . import model
 from . import io
 from . import constants
 from . import tensorize
@@ -21,20 +23,48 @@ def hello():
     return "prosit!\n"
 
 
-@app.route("/predict/", methods=["POST"])
-def predict():
-    df = pandas.read_csv(flask.request.files["peptides"])
-    tensor = tensorize.peptidelist(df)
-    result = prediction.predict(tensor, model, model_config)
+def predict(csv):
+    df = pd.read_csv(csv)
+    data = tensorize.csv(df)
+    data = prediction.predict(data, d_spectra)
+    data = prediction.predict(data, d_irt)
+    return data
+
+
+@app.route("/predict/msms", methods=["POST"])
+def return_msms():
+    result = predict(flask.request.files["peptides"])
     df_pred = maxquant.convert_prediction(result)
-    path = "{}prediction.csv".format(model_dir)
-    maxquant.write(df_pred, path)
-    return flask.send_file(path)
+    tmp_f = tempfile.NamedTemporaryFile(delete=True)
+    maxquant.write(df_pred, tmp_f.name)
+
+    @after_this_request
+    def cleanup(response):
+        tmp_f.close()
+        return response
+
+    return flask.send_file(tmp_f.name)
 
 
 if __name__ == "__main__":
-    model_dir = constants.MODEL_DIR
-    global model
-    global model_config
-    model, model_config = model_lib.load(model_dir, trained=True)
+    warnings.filterwarnings("ignore")
+    global d_spectra
+    global d_irt
+    d_spectra = {}
+    d_irt = {}
+
+    d_spectra["graph"] = tf.Graph()
+    with d_spectra["graph"].as_default():
+        d_spectra["session"] = tf.Session()
+        with d_spectra["session"].as_default():
+            d_spectra["model"], d_spectra["config"] = model.load(
+                constants.MODEL_SPECTRA
+            )
+            d_spectra["model"].compile(optimizer="adam", loss="mse")
+    d_irt["graph"] = tf.Graph()
+    with d_irt["graph"].as_default():
+        d_irt["session"] = tf.Session()
+        with d_irt["session"].as_default():
+            d_irt["model"], d_irt["config"] = model.load(constants.MODEL_IRT)
+            d_irt["model"].compile(optimizer="adam", loss="mse")
     app.run(host="0.0.0.0")

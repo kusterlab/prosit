@@ -4,7 +4,6 @@ from keras.engine.topology import Layer
 
 
 class Attention(Layer):
-
     def __init__(
         self,
         context=False,
@@ -83,14 +82,14 @@ class Attention(Layer):
 
     def get_config(self):
         config = {
-            'bias': self.bias,
-            'context': self.context,
-            'W_regularizer': regularizers.serialize(self.W_regularizer),
-            'b_regularizer': regularizers.serialize(self.b_regularizer),
-            'u_regularizer': regularizers.serialize(self.u_regularizer),
-            'W_constraint': constraints.serialize(self.W_constraint),
-            'b_constraint': constraints.serialize(self.b_constraint),
-            'u_constraint': constraints.serialize(self.u_constraint),
+            "bias": self.bias,
+            "context": self.context,
+            "W_regularizer": regularizers.serialize(self.W_regularizer),
+            "b_regularizer": regularizers.serialize(self.b_regularizer),
+            "u_regularizer": regularizers.serialize(self.u_regularizer),
+            "W_constraint": constraints.serialize(self.W_constraint),
+            "b_constraint": constraints.serialize(self.b_constraint),
+            "u_constraint": constraints.serialize(self.u_constraint),
         }
         base_config = super(Attention, self).get_config()
         return dict(list(base_config.items()) + list(config.items()))

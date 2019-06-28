@@ -1,5 +1,6 @@
 DATA ?= $(HOME)/data.hdf5
-MODEL ?= $(HOME)/model/
+MODEL_SPECTRA ?= $(HOME)/model_sectra/
+MODEL_IRT ?= $(HOME)/model_irt/
 OUT_FOLDER ?= $(MODEL)
 HOSTPORT ?= 5000
 GPU ?= 0
@@ -12,33 +13,18 @@ build:
 	$(DOCKER) build -qf $(DOCKERFILE) -t $(IMAGE) .
 
 
-predict: build
-	$(DOCKER) run -it \
-	    -v "$(DATA)":/root/data.hdf5 \
-	    -v "$(MODEL)":/root/model/ \
-	    -v "$(OUT_FOLDER)":/root/prediction/ \
-	    -e CUDA_VISIBLE_DEVICES=$(GPU) \
-	    $(IMAGE) python3 -m prosit.prediction
-
-
-train: build
-	$(DOCKER) run -it \
-	    -v "$(DATA)":/root/data.hdf5 \
-	    -v "$(MODEL)":/root/model/ \
-	    -e CUDA_VISIBLE_DEVICES=$(GPU) \
-	    $(IMAGE) python3 -m prosit.training
-
-
 server: build
 	$(DOCKER) run -it \
-	    -v "$(MODEL)":/root/model/ \
+	    -v "$(MODEL_SPECTRA)":/root/model_spectra/ \
+	    -v "$(MODEL_IRT)":/root/model_irt/ \
 	    -e CUDA_VISIBLE_DEVICES=$(GPU) \
 	    -p $(HOSTPORT):5000 \
 	    $(IMAGE) python3 -m prosit.server
 
 jump: build
 	$(DOCKER) run -it \
-	    -v "$(MODEL)":/root/model/ \
+	    -v "$(MODEL_SPECTRA)":/root/model_spectra/ \
+	    -v "$(MODEL_IRT)":/root/model_irt/ \
 	    -v "$(DATA)":/root/data.hdf5 \
 	    -e CUDA_VISIBLE_DEVICES=$(GPU) \
 	    $(IMAGE) bash

@@ -97,7 +97,6 @@ def match(row, ion_types, max_charge=constants.DEFAULT_MAX_CHARGE):
 
 
 def c_lambda(matches, charge, attr):
-
     def mapping(i):
         charge_index = int(charge - 1)
         m = matches[i]
