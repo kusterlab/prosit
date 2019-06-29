@@ -1,5 +1,5 @@
 FROM tensorflow/tensorflow:1.10.1-gpu-py3
-RUN pip install keras==2.2.1 h5py tables flask
+RUN pip install keras==2.2.1 h5py tables flask pyteomics
 
 ENV KERAS_BACKEND=tensorflow
 ENV TF_CPP_MIN_LOG_LEVEL=3

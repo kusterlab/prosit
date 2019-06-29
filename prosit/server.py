@@ -12,7 +12,7 @@ from . import constants
 from . import tensorize
 from . import prediction
 from . import alignment
-from . import maxquant
+from . import converters
 
 
 app = flask.Flask(__name__)
@@ -31,12 +31,27 @@ def predict(csv):
     return data
 
 
+@app.route("/predict/generic", methods=["POST"])
+def return_generic():
+    result = predict(flask.request.files["peptides"])
+    tmp_f = tempfile.NamedTemporaryFile(delete=True)
+    c = converters.generic.Converter(result, tmp_f.name)
+    c.convert()
+
+    @after_this_request
+    def cleanup(response):
+        tmp_f.close()
+        return response
+
+    return flask.send_file(tmp_f.name)
+
+
 @app.route("/predict/msms", methods=["POST"])
 def return_msms():
     result = predict(flask.request.files["peptides"])
-    df_pred = maxquant.convert_prediction(result)
+    df_pred = converters.maxquant.convert_prediction(result)
     tmp_f = tempfile.NamedTemporaryFile(delete=True)
-    maxquant.write(df_pred, tmp_f.name)
+    converters.maxquant.write(df_pred, tmp_f.name)
 
     @after_this_request
     def cleanup(response):

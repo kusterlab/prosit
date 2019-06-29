@@ -7,6 +7,6 @@ from . import training
 from . import server
 from . import layers
 from . import sanitize
+from . import converters
 
-
-__version__ = "1.0"
+__version__ = "1.1"
