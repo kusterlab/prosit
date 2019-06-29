@@ -27,26 +27,30 @@ The time installation takes is dependent on your download speed (Prosit download
 
 ## Model
 
-Prosit assumes your model to be in a directory that includes:
+Prosit assumes your models are in directories that look like this:
 
 - model.yml - a saved keras model
 - config.yml - a model specifying names of inputs and outputs of the model
 - weights file(s) - that follow the template `weights_{epoch}_{loss}.hdf5`
 
-You can download a pre-trained model for HCD fragmentation prediction on https://figshare.com/projects/Prosit/35582.
+You can download pre-trained models for HCD fragmentation prediction and iRT prediction on https://figshare.com/projects/Prosit/35582.
 
 ## Usage
 
 The following command will load your model from `/path/to/model/`.
 In the example GPU device 0 is used for computation. The default PORT is 5000.
 
-    make server MODEL=/path/to/model/
+    make server MODEL_SPECTRA=/path/to/fragmentation_model/ MODEL_IRT=/path/to/irt_model/
+
+Currently two output formats are supported: a MaxQuant style `msms.txt` not including the iRT value and a generic text file (that works with Spectronaut)
 
 ## Example
 
-Please find an example input file at `example/peptidelist.csv`. After starting the server you can run:
+Please find an example input file at `example/peptidelist.csv`. After starting the server you can run the following commands, depending on what output format you prefer:
 
-    curl -F "peptides=@examples/peptidelist.csv" http://127.0.0.1:5000/predict/
+    curl -F "peptides=@examples/peptidelist.csv" http://127.0.0.1:5000/predict/msms
+
+    curl -F "peptides=@examples/peptidelist.csv" http://127.0.0.1:5000/predict/generic
 
     The example takes about 4s to run. An expected output file can be found at `examples/output_msms.txt`.
 
@@ -58,9 +62,9 @@ Please note: Sequences with amino acid U, O, or X are not supported. Modificatio
 
 ## Pseudo-code
 
-1. Load the model given as MODEL environment variable
+1. Load the models given as in the MODEL\_X environment variables
 2. Start a server and wait for inputs
 3. On incomming request
     * transform peptide list to model input format (numpy arrays)
-    * predict fragment intensity with loaded model for given peptides
-    * transform prediction to msms.txt output format and return response
+    * predict fragment intensity and iRT with the loaded models for the given peptides
+    * transform prediction to the requested output format and return response

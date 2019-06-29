@@ -2,10 +2,10 @@ import pandas
 
 import os
 
-from . import constants
-from . import match
-from . import annotate
-from . import utils
+from .. import constants
+from .. import match
+from .. import annotate
+from .. import utils
 
 COL_SEP = "\t"
 
