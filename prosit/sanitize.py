@@ -26,14 +26,18 @@ def normalize_base_peak(array):
     return array
 
 
-def mask_outofrange(array, lengths, mask=-1.):
+def mask_outofrange(array, lengths, mask=-1.0):
     # dim
     for i in range(array.shape[0]):
         array[i, lengths[i] - 1 :, :, :, :] = mask
     return array
 
 
-def mask_outofcharge(array, charges, mask=-1.):
+def cap(array, nlosses=1, z=3):
+    return array[:, :, :, :nlosses, :z]
+
+
+def mask_outofcharge(array, charges, mask=-1.0):
     # dim
     for i in range(array.shape[0]):
         if charges[i] < 3:
