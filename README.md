@@ -48,11 +48,13 @@ Currently two output formats are supported: a MaxQuant style `msms.txt` not incl
 
 Please find an example input file at `example/peptidelist.csv`. After starting the server you can run the following commands, depending on what output format you prefer:
 
-    curl -F "peptides=@examples/peptidelist.csv" http://127.0.0.1:5000/predict/msms
-
     curl -F "peptides=@examples/peptidelist.csv" http://127.0.0.1:5000/predict/generic
 
-    The example takes about 4s to run. An expected output file can be found at `examples/output_msms.txt`.
+    curl -F "peptides=@examples/peptidelist.csv" http://127.0.0.1:5000/predict/msp
+
+    curl -F "peptides=@examples/peptidelist.csv" http://127.0.0.1:5000/predict/msms
+
+    The examples takes about 4s to run. Expected output files (.generic, .msp and .msms) can be found in `examples/`.
 
 ## Using Prosit on your data
 
