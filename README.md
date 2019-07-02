@@ -54,7 +54,7 @@ Please find an example input file at `example/peptidelist.csv`. After starting t
 
     curl -F "peptides=@examples/peptidelist.csv" http://127.0.0.1:5000/predict/msms
 
-    The examples takes about 4s to run. Expected output files (.generic, .msp and .msms) can be found in `examples/`.
+The examples take about 4s to run. Expected output files (.generic, .msp and .msms) can be found in `examples/`.
 
 ## Using Prosit on your data
 
