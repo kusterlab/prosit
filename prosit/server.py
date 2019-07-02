@@ -46,6 +46,21 @@ def return_generic():
     return flask.send_file(tmp_f.name)
 
 
+@app.route("/predict/msp", methods=["POST"])
+def return_msp():
+    result = predict(flask.request.files["peptides"])
+    tmp_f = tempfile.NamedTemporaryFile(delete=True)
+    c = converters.msp.Converter(result, tmp_f.name)
+    c.convert()
+
+    @after_this_request
+    def cleanup(response):
+        tmp_f.close()
+        return response
+
+    return flask.send_file(tmp_f.name)
+
+
 @app.route("/predict/msms", methods=["POST"])
 def return_msms():
     result = predict(flask.request.files["peptides"])

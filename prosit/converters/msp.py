@@ -1,46 +1,8 @@
-import pandas as pd
 import numpy as np
-import h5py
 import pyteomics
 
 from .. import constants
 from .. import utils
-
-class Converter():
-    def __init__(self, data, out_path):
-        self.out_path = out_path
-        self.data = data
-
-    def convert(self):
-        IONS = get_ions().reshape(174, -1).flatten()
-        # TODO VECTORIZE CHARGE AND ENERGY
-        with open(self.out_path, mode="w", encoding="utf-8") as f:
-            first_spec = True
-            for i in range(self.data["iRT"].shape[0]):
-                aIntensity = self.data["intensities_pred"][i]
-                sel = np.where(aIntensity > 0)
-                aIntensity = aIntensity[sel]
-                print(aIntensity)
-                collision_energy = self.data["collision_energy_aligned_normed"][i] * 100
-                iRT = self.data["iRT"][i]
-                aMass = self.data["masses_pred"][i][sel]
-                precursor_charge = self.data["precursor_charge_onehot"][i]
-                sequence_integer = self.data["sequence_integer"][i]
-                aIons = IONS[sel]
-                spec = Spectrum(
-                    aIntensity,
-                    collision_energy,
-                    iRT,
-                    aMass,
-                    precursor_charge,
-                    sequence_integer,
-                    aIons,
-                )
-                if not first_spec:
-                    f.write("\n")
-                first_spec = False
-                f.write(str(spec))
-        return spec
 
 
 def generate_aa_comp():
@@ -61,8 +23,6 @@ def generate_aa_comp():
 
 
 aa_comp = generate_aa_comp()
-
-
 
 
 def get_ions():
@@ -94,7 +54,6 @@ def calculate_mods(sequence_integer):
     >>> calculate_mods(x)
     2
     """
-    # TODO could be vectorized in numpy
     return len(np.where((sequence_integer == ox_int) | (sequence_integer == c_int))[0])
 
 
@@ -144,6 +103,41 @@ def generate_mod_strings(sequence_integer):
     return returnString_mods, returnString_modString
 
 
+class Converter():
+    def __init__(self, data, out_path):
+        self.out_path = out_path
+        self.data = data
+
+    def convert(self):
+        IONS = get_ions().reshape(174, -1).flatten()
+        with open(self.out_path, mode="w", encoding="utf-8") as f:
+            first_spec = True
+            for i in range(self.data["iRT"].shape[0]):
+                aIntensity = self.data["intensities_pred"][i]
+                sel = np.where(aIntensity > 0)
+                aIntensity = aIntensity[sel]
+                collision_energy = self.data["collision_energy_aligned_normed"][i] * 100
+                iRT = self.data["iRT"][i]
+                aMass = self.data["masses_pred"][i][sel]
+                precursor_charge = self.data["precursor_charge_onehot"][i].argmax() + 1
+                sequence_integer = self.data["sequence_integer"][i]
+                aIons = IONS[sel]
+                spec = Spectrum(
+                    aIntensity,
+                    collision_energy,
+                    iRT,
+                    aMass,
+                    precursor_charge,
+                    sequence_integer,
+                    aIons,
+                )
+                if not first_spec:
+                    f.write("\n")
+                first_spec = False
+                f.write(str(spec))
+        return spec
+
+
 class Spectrum(object):
     def __init__(
         self,
@@ -171,8 +165,6 @@ class Spectrum(object):
             charge=int(self.precursor_charge),
         )
 
-        # TODO clean solution https://pyteomics.readthedocs.io/en/latest/mass.html
-
     def __str__(self):
         s = "Name: {sequence}/{charge}\nMW: {precursor_mass}\n"
         s += "Comment: Parent={precursor_mass} Collision_energy={collision_energy} "
@@ -192,11 +184,3 @@ class Spectrum(object):
             s += "\n" + str(mz) + "\t" + str(intensity) + '\t"'
             s += ion.decode("UTF-8").replace("(", "^").replace("+", "") + '/0.0ppm"'
         return s
-
-
-if __name__ == "__main__":
-    HDF5_PATH = "/mnt/global/ucc_ml/bierdimpfl/workDir/20/data.hdf5"
-    OUTPATH = "myPrositLib.msp"
-    # HDF5_PATH = "/home/tschmidt/tmp/hela/forward/data.hdf5"
-    data = load_data(HDF5_PATH)
-    s = iter_data(data, OUTPATH)
