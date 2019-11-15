@@ -1,6 +1,6 @@
 import os
 
-from . import io
+from . import io_local
 from . import losses
 from . import model as model_lib
 from . import constants
@@ -28,8 +28,8 @@ def train(tensor, model, model_config, callbacks):
     else:
         loss = losses.get(model_config["loss"])
     optimizer = model_config["optimizer"]
-    x = io.get_array(tensor, model_config["x"])
-    y = io.get_array(tensor, model_config["y"])
+    x = io_local.get_array(tensor, model_config["x"])
+    y = io_local.get_array(tensor, model_config["y"])
     model.compile(optimizer=optimizer, loss=loss)
     model.fit(
         x=x,
@@ -48,6 +48,6 @@ if __name__ == "__main__":
     model_dir = constants.MODEL_DIR
 
     model, model_config = model_lib.load(model_dir, trained=True)
-    tensor = io.from_hdf5(data_path)
+    tensor = io_local.from_hdf5(data_path)
     callbacks = get_callbacks(model_dir)
     train(tensor, model, model_config, callbacks)

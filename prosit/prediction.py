@@ -3,14 +3,14 @@ import keras
 import numpy as np
 
 from . import model as model_lib
-from . import io
+from . import io_local
 from . import constants
 from . import sanitize
 
 
 def predict(data, d_model):
     # check for mandatory keys
-    x = io.get_array(data, d_model["config"]["x"])
+    x = io_local.get_array(data, d_model["config"]["x"])
 
     keras.backend.set_session(d_model["session"])
     with d_model["graph"].as_default():

@@ -1,4 +1,4 @@
-from . import io
+from . import io_local
 from . import constants
 from . import model
 from . import alignment
