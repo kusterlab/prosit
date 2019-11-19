@@ -7,7 +7,7 @@ import pandas as pd
 import tensorflow as tf
 
 from . import model
-from . import io
+from . import io_local
 from . import constants
 from . import tensorize
 from . import prediction
