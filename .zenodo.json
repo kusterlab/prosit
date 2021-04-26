@@ -1,14 +1,24 @@
 {
     "creators": [
         {
-            "affiliation": "Kusterlab", 
+            "affiliation": "Chair of Proteomics and Bioanalytics, Technical University of Munich, Germany", 
             "name": "Siegfried Gessulat",
           "orcid": "0000-0001-5530-0674"
         }, 
         {
-                      "affiliation": "Kusterlab", 
+            "affiliation": "Chair of Proteomics and Bioanalytics, Technical University of Munich, Germany", 
             "name": "Tobias Schmidt",
           "orcid": "0000-0002-1883-6514"
+        }, 
+        {
+            "affiliation": "Chair of Proteomics and Bioanalytics, Technical University of Munich, Germany", 
+            "name": "Mathias Wilhelm",
+          "orcid": "0000-0002-9224-3258"
+        }, 
+        {
+            "affiliation": "Chair of Proteomics and Bioanalytics, Technical University of Munich, Germany", 
+            "name": "Bernhard Kuster",
+          "orcid": "0000-0002-9094-1677"
         }
     ]
 }
