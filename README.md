@@ -1,3 +1,10 @@
+| :warning: WARNING :warning:         |
+|:---------------------------|
+| This repo is deprecated! It does not contain the latest updates regarding Prosit! |
+| Code related to model training can be found at [dlomix](https://github.com/wilhelm-lab/dlomix/tree/develop/dlomix)! |
+| The latest models can be found & accessed on [Koina](https://koina.proteomicsdb.org/)! |
+| More functionality (spectral-library generation & rescoring) is available with [Oktoberfest](https://github.com/wilhelm-lab/oktoberfest)! |
+| This functionality is also available on the [Prosit website](https://www.proteomicsdb.org/prosit/)! |
 
 # Prosit
 
